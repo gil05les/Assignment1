@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.task3.proto";
+
+package filesystem;
+
+service AssignJob {
+    rpc map (stream MapInput) returns (MapOutput) {} //Server Streaming - server will return mapped files status one by one or error message
+    rpc reduce (ReduceInput) returns ( ReduceOutput) {} //Unary API - client will send the mapped folder path and server will respond with the status once the reduce task is completed or error message
+}
+
+message MapInput{
+    string ip = 1;
+    int32 port = 2;
+    string inputfilepath = 4;
+    string outputfilepath = 5;
+
+}
+
+message MapOutput{
+    int32 jobstatus = 1;
+}
+
+message ReduceInput{
+    string ip = 1;
+    int32 port = 2;
+    string inputfilepath = 4;
+    string outputfilepath = 5;
+
+}
+
+message ReduceOutput{
+    int32 jobstatus = 1;
+}
