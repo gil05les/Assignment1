@@ -38,25 +38,16 @@ public class MapReduce {
                     int fileSize = 0;
                     while (line != null) {
                         byte[] bytes = (line + System.lineSeparator()).getBytes(Charset.defaultCharset());
-
-                        // If the current line is larger than the remaining space in the chunk
-                        if (fileSize + bytes.length > CHUNK_SIZE) {
-                            // Split the line to fit the remaining space
-                            int remainingSpace = CHUNK_SIZE - fileSize;
-                            String partToWrite = line.substring(0, remainingSpace);
-                            out.write(partToWrite.getBytes(Charset.defaultCharset()));
-
-                            // Update the line to include only the remaining part
-                            line = line.substring(remainingSpace);
-
-                            // Move to the next chunk
-                            break;
-                        } else {
-                            // Write the entire line if it fits in the chunk
-                            out.write(bytes);
-                            fileSize += bytes.length;
+                        if (bytes.length > CHUNK_SIZE) {
+                            System.err.println("Skipping line exceeding chunk size: " + line);
                             line = br.readLine();
+                            continue;
                         }
+                        if (fileSize + bytes.length > CHUNK_SIZE)
+                            break;
+                        out.write(bytes);
+                        fileSize += bytes.length;
+                        line = br.readLine();
                     }
                 }
             }
