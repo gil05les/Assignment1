@@ -2,10 +2,12 @@ Assignment 1
 ------------
 
 # Team Members
+- Yanik Almer
+- Gilles Harder
 
 # GitHub link to your (forked) repository
 
-...
+https://github.com/gil05les/Assignment1
 
 # Task 4
 
