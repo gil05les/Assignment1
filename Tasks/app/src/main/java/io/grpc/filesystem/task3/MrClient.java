@@ -43,7 +43,7 @@ public class MrClient {
         }
         client.requestMap(ip, mapPort, inputFilePath, outputFilePath);
 
-        Set<Integer> values = new HashSet<Integer>(client.jobStatus.values());
+        Set<Integer> values = new HashSet<>(client.jobStatus.values());
 
         if (values.size() == 1 && client.jobStatus.containsValue(2)) {
             System.out.println("testettssetstes");
@@ -77,20 +77,21 @@ public class MrClient {
         AssignJobGrpc.AssignJobStub stub = AssignJobGrpc.newStub(channel);
 
         // 3. Implement a StreamObserver to handle responses.
-        StreamObserver<MapInput> requestObserver = stub.map(new StreamObserver<MapOutput>() {
+        StreamObserver<MapInput> requestObserver = stub.map(new StreamObserver<>() {
             @Override
             public void onNext(MapOutput mapOutput) {
                 int status = mapOutput.getJobstatus();
-                String chunkFilePath = mapOutput.getInputfilepath(); // Retrieve inputfilepath
 
                 if (status == 2) {
-                    System.out.println("Map task completed successfully for chunk: " + chunkFilePath);
-                    // Update job status to completed using the correct chunk file path
-                    jobStatus.put(chunkFilePath, status);
+                    System.out.println("Map task completed successfully.");
+                    // Update job status to completed for all chunk files
+                    for (String chunkFilePath : jobStatus.keySet()) {
+                        jobStatus.put(chunkFilePath, status);
+                    }
                     System.out.println("Updated jobStatus: " + jobStatus);
                     System.out.println("Job status successfully updated.");
                 } else {
-                    System.err.println("Map task failed for chunk " + chunkFilePath + " with status: " + status);
+                    System.err.println("Map task failed with status: " + status);
                 }
             }
 
