@@ -8,6 +8,14 @@ import com.task3.proto.AssignJobGrpc;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.filesystem.task2.MapReduce;
+import com.task3.proto.AssignJobGrpc;
+import com.task3.proto.MapInput;
+import com.task3.proto.MapOutput;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import io.grpc.stub.StreamObserver;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +54,38 @@ public class MrMapServer {
          * Look through the available functions and definition in this Grpc file to complete the task
          * Use your previously written MapReduce.map function.
          */
+        @Override
+        public StreamObserver<MapInput> map(StreamObserver<MapOutput> responseObserver) {
+            return new StreamObserver<MapInput>() {
 
+                @Override
+                public void onNext(MapInput request) {
+                    String inputFilePath = request.getInputfilepath();
+                    System.out.println("Map request received for file: " + inputFilePath+ " fdsfadsfdsagdasfdsafdsaO");
+                    try {
+                        // Use the MapReduce.map function to process the input file
+                        MapReduce.map(inputFilePath);
+                        // Optionally, you can handle outputFilePath if needed
+                    } catch (IOException e) {
+                        // Send an error to the client if mapping fails
+                        responseObserver.onError(e);
+                    }
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    // Handle any errors from the client
+                    responseObserver.onError(t);
+                }
+
+                @Override
+                public void onCompleted() {
+                    // After all MapInput messages are processed, send a MapOutput response
+                    MapOutput response = MapOutput.newBuilder().setJobstatus(2).build(); // Assuming 2 indicates success
+                    responseObserver.onNext(response);
+                    responseObserver.onCompleted();
+                }
+            };
+        }
     }
 }
