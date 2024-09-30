@@ -46,7 +46,7 @@ public class MrReduceServer {
 
         @Override
         public void reduce(ReduceInput request, StreamObserver<ReduceOutput> responseObserver) {
-            System.out.println("Reduce request received HALLOOOOOOO");
+            System.out.println("Reduce request received");
             String mapDirPath = request.getInputfilepath();
             String outputFilePath = request.getOutputfilepath();
             try {
@@ -59,6 +59,8 @@ public class MrReduceServer {
                 System.err.println("Error reducing files: " + e.getMessage());
                 responseObserver.onNext(ReduceOutput.newBuilder().setJobstatus(1).build());
             }
+            System.out.println("Reduce request processed succesfully!\n");
+
             responseObserver.onCompleted(); // Finish the stream
         }
     }

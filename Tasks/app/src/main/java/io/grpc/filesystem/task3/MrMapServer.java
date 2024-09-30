@@ -56,12 +56,13 @@ public class MrMapServer {
          */
         @Override
         public StreamObserver<MapInput> map(StreamObserver<MapOutput> responseObserver) {
+            System.out.println("Map request received");
+
             return new StreamObserver<MapInput>() {
 
                 @Override
                 public void onNext(MapInput request) {
                     String inputFilePath = request.getInputfilepath();
-                    System.out.println("Map request received for file: " + inputFilePath+ " fdsfadsfdsagdasfdsafdsaO");
                     try {
                         // Use the MapReduce.map function to process the input file
                         MapReduce.map(inputFilePath);
@@ -84,6 +85,8 @@ public class MrMapServer {
                     MapOutput response = MapOutput.newBuilder().setJobstatus(2).build(); // Assuming 2 indicates success
                     responseObserver.onNext(response);
                     responseObserver.onCompleted();
+                    System.out.println("Map request processed succesfully!\n");
+
                 }
             };
         }

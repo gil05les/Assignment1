@@ -49,10 +49,9 @@ public class MrClient {
         Set<Integer> values = new HashSet<>(client.jobStatus.values());
 
         if (values.size() == 1 && client.jobStatus.containsValue(2)) {
-            System.out.println("testettssetstes");
             response = client.requestReduce(ip, reducePort, chunkPath, outputFilePath);
             if (response == 2) {
-                System.out.println("Reduce task completed!");
+                System.out.println("Reduce task completed successfully!");
             } else {
                 System.out.println("Try again! " + response);
             }
@@ -86,13 +85,11 @@ public class MrClient {
                 int status = mapOutput.getJobstatus();
 
                 if (status == 2) {
-                    System.out.println("Map task completed successfully.");
+                    System.out.println("Map task completed successfully!");
                     // Update job status to completed for all chunk files
                     for (String chunkFilePath : jobStatus.keySet()) {
                         jobStatus.put(chunkFilePath, status);
                     }
-                    System.out.println("Updated jobStatus: " + jobStatus);
-                    System.out.println("Job status successfully updated.");
                 } else {
                     System.err.println("Map task failed with status: " + status);
                 }
@@ -105,7 +102,6 @@ public class MrClient {
 
             @Override
             public void onCompleted() {
-                System.out.println("All map responses received.");
             }
         });
 
@@ -140,17 +136,14 @@ public class MrClient {
          6. Return the job status (e.g., 2 for success).*/
 
         // 1. Open a gRPC channel to the Reduce server.
-        System.out.println("Requesting Reduce task1");
         ManagedChannel channel = ManagedChannelBuilder.forAddress(ip, portNumber)
                 .usePlaintext()
                 .build();
 
         // 2. Create a blocking stub for reduce requests.
-        System.out.println("Requesting Reduce task2");
         AssignJobGrpc.AssignJobBlockingStub stub = AssignJobGrpc.newBlockingStub(channel);
 
         // 3. Build and send the reduce request.
-        System.out.println("Requesting Reduce task3");
         ReduceInput input = ReduceInput.newBuilder()
                 .setIp(ip)
                 .setPort(portNumber)
@@ -159,16 +152,13 @@ public class MrClient {
                 .build();
 
         // 4. Check the job status from the server's response.
-        System.out.println("Requesting Reduce task4");
         ReduceOutput response = stub.reduce(input);
         int jobStatus = response.getJobstatus();
 
         // 5. Close the gRPC channel after completion.
-        System.out.println("Requesting Reduce task5");
         channel.shutdown();
 
         // 6. Return the job status (e.g., 2 for success).
-        System.out.println("Requesting Reduce task6");
         return jobStatus;
     }
 }
