@@ -28,6 +28,15 @@ public class MapReduce {
         if (!chunkDir.exists()) {
             chunkDir.mkdirs();
         }
+        //delete all files in the directory
+        else {
+            File[] files = chunkDir.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    f.delete();
+                }
+            }
+        }
 
         try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
             String line = br.readLine();

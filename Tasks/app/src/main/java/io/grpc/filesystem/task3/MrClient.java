@@ -4,12 +4,13 @@
 
 package io.grpc.filesystem.task3;
 
+
 import com.task3.proto.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.filesystem.task2.MapReduce;
 import io.grpc.stub.StreamObserver;
-
+import java.nio.file.*;
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +28,8 @@ public class MrClient {
         Integer reducePort = Integer.parseInt(args[2]);
         String inputFilePath = args[3];
         String outputFilePath = args[4];
+
+
 
         MrClient client = new MrClient();
         int response;
@@ -134,8 +137,8 @@ public class MrClient {
          3. Build and send the reduce request.
          4. Check the job status from the server's response.
          5. Close the gRPC channel after completion.
-         6. Return the job status (e.g., 2 for success).
-        */
+         6. Return the job status (e.g., 2 for success).*/
+
         // 1. Open a gRPC channel to the Reduce server.
         System.out.println("Requesting Reduce task1");
         ManagedChannel channel = ManagedChannelBuilder.forAddress(ip, portNumber)
