@@ -52,3 +52,6 @@ processing Some results are always saved to a disk or a comparable device and th
 This is way to slow for iterative algorithms and develops a big latency. Moreover, MapReduce lacks 
 native support for iterative operations, so each iteration would necessitate a separate MapReduce job,
 resulting in additional overhead.*
+
+For this assignment we used Co-Pilot for coding, ChatGPT for better understanding of the different 
+classes and Google for RPC explanation
