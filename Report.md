@@ -47,6 +47,8 @@ every word that is in the line will be placed into a chunk file and the words ar
 one gets a 1 next to it. (i.e. if there are multiple the's in one line they won't be added to each 
 other they are handled differently) Then these word counts of these map-chunk-files are collected in 
 the function collectWordCounts and in the end the mapped wordCounts are reduced and stored in a new 
-output file.*
-
-*wefewfewf*
+output file.MapReduce is not ideal for ML, or data analysis tasks because it isn't good in in-memory 
+processing Some results are always saved to a disk or a comparable device and the reloaded from it. 
+This is way to slow for iterative algorithms and develops a big latency. Moreover, MapReduce lacks 
+native support for iterative operations, so each iteration would necessitate a separate MapReduce job,
+resulting in additional overhead.*
